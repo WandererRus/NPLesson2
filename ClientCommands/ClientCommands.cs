@@ -14,7 +14,7 @@ namespace ClientCommands
         Socket client { get; set; }
         Socket server { get; set; }
 
-        string _answer = "";
+        public string _answer = "";
 
         public string error = "";
         public bool ConnectServer(IPEndPoint point, Socket clientSocket)
@@ -29,11 +29,11 @@ namespace ClientCommands
                     {
 
                         byte[] buffer = new byte[1024];
-                        int answerServer = server.Receive(buffer);
-                        while (answerServer > 0)
-                        {
-                            _answer += Encoding.UTF8.GetString(buffer);
-                            answerServer = server.Receive(buffer);
+                        ArraySegment<byte> segment = new ArraySegment<byte>(buffer,0,buffer.Length);
+                        Task<int> message = server.ReceiveAsync(segment, SocketFlags.None);
+                        if(message.IsCompleted)
+                        {                            
+                            _answer += Encoding.UTF8.GetString(segment.ToArray());
                         }
                     }
                 }, client);
