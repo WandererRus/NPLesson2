@@ -9,8 +9,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\ClientCommands\ClientCommands.csproj" />
     <ProjectReference Include="..\Contacts\Contacts.csproj" />
+    <ProjectReference Include="..\ServerCommands\ServerCommands.csproj" />
   </ItemGroup>
 
   <ItemGroup>
