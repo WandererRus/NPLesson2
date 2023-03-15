@@ -67,7 +67,7 @@
             // 
             // tmr_refreshConnection
             // 
-            this.tmr_refreshConnection.Interval = 3000;
+            this.tmr_refreshConnection.Interval = 500;
             this.tmr_refreshConnection.Tick += new System.EventHandler(this.tmr_refreshConnection_Tick);
             // 
             // btn_updateClientsList

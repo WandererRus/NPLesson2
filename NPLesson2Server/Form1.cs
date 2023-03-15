@@ -29,6 +29,22 @@ namespace NPLesson2Server
                 server.Listen(100);
                 tmr_refreshConnection.Start();
             }
+            if (command.GetClientSocket(server))
+            {
+                if (command.clientSockets.Count > 0)
+                {
+                    foreach (Socket client in command.clientSockets)
+                    {
+                        string message = command.ReciveMessage(client);
+                        rtb_clients.Text += message + "\n";
+                        command.CommandManage(command.ReciveMessage(client), client);
+                    }
+                }
+            }
+            else
+            {
+                MessageBox.Show(command.error);
+            }
         }
 
         private void btn_stopServer_Click(object sender, EventArgs e)
@@ -48,20 +64,7 @@ namespace NPLesson2Server
 
         private void tmr_refreshConnection_Tick(object sender, EventArgs e)
         {
-            if (command.GetClientSocket(server))
-            {
-                if(command.clientSockets.Count > 0) 
-                {
-                    foreach (Socket client in command.clientSockets) 
-                    {
-                        command.CommandManage(command.ReciveMessage(client),client);
-                    }
-                }
-            }
-            else
-            {
-                MessageBox.Show(command.error);
-            }
+            
         }
 
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)

@@ -16,14 +16,11 @@ namespace NPLesson2
             InitializeComponent();
         }
 
-        private void btn_connectServer_Click(object sender, EventArgs e)
+        private async void btn_connectServer_Click(object sender, EventArgs e)
         {
-            if (command.ConnectServer(new IPEndPoint(IPAddress.Parse("127.0.0.1"), 80), contact.Socket))
-            { 
-                if (command.ServerIsConnected())
-                    rtb_chat.Text = command._answer;
-            }
 
+            await Task.Run(() => command.ConnectServer(new IPEndPoint(IPAddress.Parse("127.0.0.1"), 80), contact.Socket));
+            rtb_chat.Text = command._answer;
         }
 
         private void btn_disconnectServer_Click(object sender, EventArgs e)
@@ -38,9 +35,9 @@ namespace NPLesson2
 
         private void btn_sendMessage_Click(object sender, EventArgs e)
         {
-            if (command.ServerIsConnected())
-                command.SendMessage("Contact|"+contact.SendToNetwork());   
-
+            if (command.client.Connected)
+                command.SendMessage("Проверка");
+            //command.SendMessage("Contact|" + contact.SendToNetwork());
         }
 
         private void tb_message_TextChanged(object sender, EventArgs e)
@@ -67,6 +64,12 @@ namespace NPLesson2
             "+79287604894"
             );
             command = new ClientServerCommand();
+        }
+
+        private void Form1_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            if (command.client.Connected)
+                command.client.Disconnect(false);
         }
     }    
 }
